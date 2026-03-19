@@ -1,0 +1,43 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace PetShop.Models
+    {
+        public class Health : Product, IValidatableObject
+        {
+            [Required]
+            public string Type { get; set; }
+
+            [Required]
+            public bool RequiresPrescription { get; set; }
+
+            public string? PrescriptionName { get; set; }
+
+            public Health() { }
+
+            public Health(string name, decimal price, int quantity, string type, bool requiresPrescription, string? prescriptionName)
+                : base(name, price, quantity)
+            {
+                Type = type;
+                RequiresPrescription = requiresPrescription;
+                PrescriptionName = prescriptionName;
+            }
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                if (RequiresPrescription && string.IsNullOrWhiteSpace(PrescriptionName))
+                {
+                    yield return new ValidationResult(
+                        "Prescription name is required when a prescription is needed.",
+                        new[] { nameof(PrescriptionName) });
+                }
+            }
+
+            public override string GetInfo()
+            {
+                return $"Health: {Name}, Type: {Type}, Prescription: {(RequiresPrescription ? PrescriptionName : "No")}, Price: {Price} lv, Quantity: {Quantity}";
+            }
+        }
+    }
