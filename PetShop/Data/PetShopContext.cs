@@ -16,5 +16,6 @@ namespace PetShop.Data
 
         public DbSet<PetShop.Models.Accessory> Accessory { get; set; } = default!;
         public DbSet<PetShop.Models.Health> Health { get; set; } = default!;
+        public DbSet<PetShop.Models.GiftCard> GiftCard { get; set; } = default!;
     }
 }
